@@ -144,14 +144,14 @@ export const forecastWeather = async (location: string = ""): Promise<ClimateDat
   }
 };
 
-export const fetchIcon = (code: string | undefined, dt: number) => {
-  let time = new Date(dt * 1000).getHours();
+export const fetchIcon = (code: string | undefined, dt: number | undefined) => {
+  let time = new Date(dt ? dt * 1000 : 0).getHours();
   if (code === "clear sky" && (time >= 20 || time <= 7)) {
-    return <img src={`../../public/icons/moon.svg`} alt="Moon Icon" />;
-  } else if (code === "few clouds" || code === "overcast clouds") {
-    return <img src={`../../public/icons/cloudy night.svg`} alt="Cloudy Night Icon" />;
+    return <img src={`../../icons/moon.svg`} alt="Moon Icon" />;
+  } else if ((code === "few clouds" || code === "overcast clouds") && time >= 20 || time <= 7) {
+    return <img src={`../../icons/cloudy night.svg`} alt="Cloudy Night Icon" />;
   }
   return (
-    <img src={`../../public/icons/${code}.svg`} alt="Weather Icon" />
+    <img src={`../../icons/${code}.svg`} alt="Weather Icon" />
   )
 }

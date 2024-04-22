@@ -1,6 +1,7 @@
 import { HourlyData, fetchIcon } from "@/services/weatherData";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+import { Clock } from "lucide-react";
 
 export function HourlyCard({ hourlyData }: { hourlyData: HourlyData | null }) {
 
@@ -13,23 +14,26 @@ export function HourlyCard({ hourlyData }: { hourlyData: HourlyData | null }) {
     return strTime;
   }
   return (
-    <ScrollArea className="border rounded-3xl mt-6 w-full ">
-      <div className="flex border-none">
-        {hourlyData?.list.map((hour, index) => (
-          <Card className="border-none rounded-none" key={hour.dt}>
-            <CardHeader className="text-center scroll-m-20 text-2xl font-semibold tracking-tight">{Math.round(hour.main.temp) + "°"}</CardHeader>
-            <CardContent>
-              <div className="h-[60px] w-[60px]">
-                {fetchIcon(hour.weather[0].description, hour.dt)}
-              </div>
-            </CardContent>
-            <CardFooter className="scroll-m-20 text-lg justify-center text-center font-medium tracking-tight">
-              {formatAMPM(new Date(hour.dt * 1000), index)}
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+    <Card className="mt-6">
+      <div className="flex items-center gap-2 p-6 pb-0 font-semibold text-xl tracking-tight text-muted-foreground"><Clock /> 24h forecast</div>
+      <ScrollArea className="w-full rounded-3xl">
+        <div className="flex border-none">
+          {hourlyData?.list.map((hour, index) => (
+            <Card className="border-none rounded-none" key={hour.dt}>
+              <CardHeader className="text-center scroll-m-20 text-2xl font-semibold tracking-tight">{Math.round(hour.main.temp) + "°"}</CardHeader>
+              <CardContent>
+                <div className="h-[60px] w-[60px] mix-blend-screen">
+                  {fetchIcon(hour.weather[0].description, hour.dt)}
+                </div>
+              </CardContent>
+              <CardFooter className="scroll-m-20 text-lg justify-center text-center font-medium tracking-tight">
+                {formatAMPM(new Date(hour.dt * 1000), index)}
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+    </Card>
   )
 }
